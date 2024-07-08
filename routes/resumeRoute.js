@@ -7,4 +7,4 @@ router.get("/:id",resumeController.getUserResume)
 router.put("/:id",resumeController.updateResume)
 router.delete("/:id",resumeController.deleteResume)
 
-module.exports=Router
+module.exports=router

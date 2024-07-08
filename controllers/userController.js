@@ -3,8 +3,10 @@ const User=require('../models/UseModel')
 module.exports={
     getUser:async(req,res)=>{
         try{
-            const user=await User.findById(req.user.id)
-            const {password,__v,createdAt,...userData}=user.__doc;
+            const id=req.params.id;
+            const user=await User.findById(id)
+            const {password,__v,createdAt,...userData}=user._doc;
+            res.status(200).json({...userData})
     
         }catch(error){
             res.status(500).json({status:false,message:error.message})
@@ -13,8 +15,10 @@ module.exports={
     },
     updateUser:async(req,res)=>{
         try{
-            const user=await User.findByIdAndUpdate(req.user.id)
-            const {password,__v,createdAt,...userData}=user.__doc;
+            co
+            const id=req.params.id;
+            const user=await User.findByIdAndUpdate(id)
+            const {password,__v,createdAt,...userData}=user._doc;
     
         }catch(error){
             res.status(500).json({status:false,message:error.message})
@@ -23,7 +27,8 @@ module.exports={
     },
     deleteUser:async(req,res)=>{
         try{
-            await User.findByIdAndDelete(req.user.id);
+            const id=req.params.id;
+            await User.findByIdAndDelete(id);
             res.status(200).json({status:false,message:"User deleted successfuly"})
         }catch(error){
             res.status(500).json({status:false,message:error.message})

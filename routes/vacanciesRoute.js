@@ -6,4 +6,4 @@ router.get("/",vacancyController.getAllVacancies)
 router.get("/:id",vacancyController.getVacancyById)
 router.get("/:id",vacancyController.getVacancyByCategory)
 
-module.exports=Router
+module.exports=router

@@ -1,4 +1,4 @@
-swagger:"2.0"
+swagger: "2.0"
 info:
 title: Job Search API
 description: This is the Job Search API 

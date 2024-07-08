@@ -3,7 +3,10 @@ const upload=require('../middleware/category.upload')
 module.exports={
     createCategory:async(req,res)=>{
         
-        const newCategory=new Category(req.body)
+        const newCategory=new Category({
+            title:req.body.title,
+            image:req.file.path
+        })
         try{
             await newCategory.save()
             res.status(201).json({status:true,message:"category created successfull"})

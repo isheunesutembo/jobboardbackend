@@ -3,13 +3,14 @@ const Vacancy=require('../models/vacancyModel')
 module.exports={
     createVacancy:async(req,res)=>{
         const newVacancy=new Vacancy(req.body)
-        const {title,description,category}=req.body;
-        if(!title||!description||!category){
+        const {title,description,category,salary}=req.body;
+        if(!title||!description||!category||!salary){
             res.status(400).json({status:false,message:"You have a missing field"})
         }
         try{
-            const newVacancy=req.body(Vacancy)
+            const newVacancy=new Vacancy(req.body)
             await newVacancy.save()
+            res.status(201).json({status:true,message:"Vacancy has been created successfully!"})
         }catch(error){
             res.status(500).json({status:false,message:error.message})
         }
@@ -40,6 +41,9 @@ module.exports={
         }catch(error){
             res.status(500).json({status:false,message:error.message});
         }
+    },
+    searchVacancy:async(req,res)=>{
+        
     }
 
 }

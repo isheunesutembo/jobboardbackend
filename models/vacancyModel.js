@@ -5,8 +5,17 @@ const VacancySchema=new mongoose.Schema({
     requirements:{type:String},
     skillTags:{type:Array,required:true},
     experience:{type:String,required:true},
+    salary:{type:String,required:true},
     benefits:{type:String,},
-    category:{type:mongoose.Schema.Types.ObjectId,required:true,
-    company:{type:mongoose.Schema.Types.ObjectId,required:true}}
+    category:{type:mongoose.Schema.Types.ObjectId,required:true},
+    company:{type:mongoose.Schema.Types.ObjectId,required:true}
+},{
+    toJSON:{
+        transform:function (doc,ret){
+            ret.vacancyId=ret._id.toString();
+            delete ret._id;
+            delete ret.__v;
+        }
+    }
 });
 module.exports=mongoose.model('Vacancy',VacancySchema)

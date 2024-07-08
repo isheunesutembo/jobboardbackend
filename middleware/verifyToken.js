@@ -39,9 +39,7 @@ const verifyHiringCompany=(req,res,next)=>{
 
 }
 const verifyAdmin=(req,res,next)=>{
-    if(
-        req.user.userType==="Admin"
-        ){
+    if(req.user.userType==="Admin"){
             next()
         }else{
             return res.status(403).json({status:false,message:"You are not allowed to access the routes"});
