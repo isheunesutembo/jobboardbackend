@@ -9,15 +9,17 @@ module.exports={
             }else{
                 const path=req.file!=undefined?req.file.path.replace(/\\/g,"/"):"";
                 const newResume=new Resume({
-                    resume:path!=""?"/"+path:"",
-                    userId:req.body.userId
+                    resume:path,
+                    userId:req.body.userId,
+                    companyId:req.body.companyId,
+                    vacancy:req.body.vacancy
                 });
                 const {resume}=req.body
                 if(!resume){
                     res.status(400).json({status:false,message:"Please upload resume"})
                 }
                 try{
-                    const newResume=req.body(Resume)
+                  
                     newResume.save()
                 }catch(error){
                     res.status(500).json({status:false,message:error.message})
