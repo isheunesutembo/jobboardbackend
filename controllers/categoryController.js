@@ -5,7 +5,7 @@ module.exports={
         
         const newCategory=new Category({
             title:req.body.title,
-            image:req.file.path
+            image:req.body.image
         })
         try{
             await newCategory.save()
