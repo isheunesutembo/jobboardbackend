@@ -3,7 +3,8 @@ const ApplicationSchema=new mongoose.Schema({
     accepted:{type:Boolean ,default:false},
     company:{type:mongoose.Schema.Types.ObjectId,required:true},
     resume:{type:mongoose.Schema.Types.ObjectId,required:true},
-    user:{type:mongoose.Schema.Types.ObjectId,required:true}
+    userId:{type:mongoose.Schema.Types.ObjectId,required:true},
+    vacancyId:{type:mongoose.Schema.Types.ObjectId,required:true}
 },{timestamps:true},
 {
     toJSON:{
