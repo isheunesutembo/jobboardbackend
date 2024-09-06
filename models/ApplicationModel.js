@@ -1,10 +1,10 @@
 const mongoose=require('mongoose')
 const ApplicationSchema=new mongoose.Schema({
     accepted:{type:Boolean ,default:false},
-    company:{type:mongoose.Schema.Types.ObjectId,required:true},
-    resume:{type:mongoose.Schema.Types.ObjectId,required:true},
-    userId:{type:mongoose.Schema.Types.ObjectId,required:true},
-    vacancyId:{type:mongoose.Schema.Types.ObjectId,required:true}
+    company:{type:mongoose.Schema.Types.ObjectId,required:true,ref:"Company"},
+    resume:{type:mongoose.Schema.Types.ObjectId,required:true,ref:"Resume"},
+    userId:{type:mongoose.Schema.Types.ObjectId,required:true,ref:"User"},
+    vacancyId:{type:mongoose.Schema.Types.ObjectId,required:true,ref:"Vacancy"}
 },{timestamps:true},
 {
     toJSON:{

@@ -8,16 +8,17 @@ module.exports={
                 res.status(500).json({status:false,message:error.message})
             }else{
                 const path=req.file!=undefined?req.file.path.replace(/\\/g,"/"):"";
+                const {userId}=req.body;
+                if(!userId||!path){
+                    res.status(400).json({status:false,message:"You have a missing field"})
+                }
                 const newResume=new Resume({
                     resume:path,
                     userId:req.body.userId,
-                    companyId:req.body.companyId,
-                    vacancy:req.body.vacancy
+                   
                 });
-                const {resume}=req.body
-                if(!resume){
-                    res.status(400).json({status:false,message:"Please upload resume"})
-                }
+             
+              
                 try{
                   
                     newResume.save()
@@ -33,6 +34,7 @@ module.exports={
         const id=req.params.id;
         try{
             const resumes =await Resume.find({userId:id})
+            
             res.status(200).json(resumes)
         }catch(error){
             res.status(500).json({status:false,message:error.message});

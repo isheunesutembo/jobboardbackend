@@ -7,8 +7,8 @@ const VacancySchema=new mongoose.Schema({
     experience:{type:String,required:true},
     salary:{type:String,required:true},
     benefits:{type:String,},
-    category:{type:mongoose.Schema.Types.ObjectId,required:true},
-    company:{type:mongoose.Schema.Types.ObjectId,required:true}
+    category:{type:mongoose.Schema.Types.ObjectId,required:true,ref:"Category"},
+    company:{type:mongoose.Schema.Types.ObjectId,required:true,ref:"Company"}
 },{
     toJSON:{
         transform:function (doc,ret){
@@ -18,4 +18,5 @@ const VacancySchema=new mongoose.Schema({
         }
     }
 });
+VacancySchema.indexes({title:"text",description:"text",requirements:"text",skillTags:"text"})
 module.exports=mongoose.model('Vacancy',VacancySchema)

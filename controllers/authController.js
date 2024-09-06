@@ -7,10 +7,11 @@ const bcrypt=require('bcrypt')
 module.exports={
     createUser:async(req,res)=>{
         const emailRegEx=/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        if(!emailRegEx.test(req.body.email)){ 
+       if(!emailRegEx.test(req.body.email)){ 
             return res.status(400).json({status:false,message:'Email is not valid'})
 
         }
+            
         const minPasswordLength=8;
         if(req.body.password<minPasswordLength){
             return res.status(400).json({status:false,message:"Password should be at least"+minPasswordLength+"characters long"})
@@ -37,11 +38,13 @@ module.exports={
        
     },
     logInUser:async(req,res)=>{
+        
         const emailRegEx=/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         if(!emailRegEx.test(req.body.email)){
             return res.status(400).json({status:false,message:'Email is not valid'})
 
         }
+            
         const minPasswordLength=8;
         if(req.body.password<minPasswordLength){
             return res.status(400).json({status:false,message:'Password should be at least'+minPasswordLength+'characters long'}) 

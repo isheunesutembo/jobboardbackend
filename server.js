@@ -12,6 +12,7 @@ const authRoute=require('./routes/authRoute')
 const resumeRoute=require('./routes/resumeRoute')
 const authCompanyRoute=require('./routes/authCompanyRoute')
 const companyRoute=require('./routes/companyRoute')
+const applicationRoute=require('./routes/applicationRoute')
 const swaggerJSDocs = YAML.load("./api.yaml");
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerJSDocs));
 dotenv.config()
@@ -21,6 +22,7 @@ mongoose.connect(process.env.DB)
 
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
+app.use('/uploads',express.static("uploads"))
 app.use("/api/categories",categoryRoute)
 app.use("/api/vacancies",vacancyRoute)
 app.use('/api/users',userRoute)
@@ -28,5 +30,6 @@ app.use('/api/',authRoute)
 app.use('/api/resumes',resumeRoute)
 app.use('/api/',authCompanyRoute)
 app.use('/api/companies',companyRoute)
+app.use('/api/applications',applicationRoute)
 app.listen(process.env.PORT||6000,console.log(`app runnng on port ${process.env.PORT}`))
 
