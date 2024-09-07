@@ -18,11 +18,11 @@ module.exports={
     getFavourites:async(req,res)=>{
         const id=req.params.id;
         try{
-            const resumes =await Favourite.find({userId:id})
+            const favourites =await Favourite.find({userId:id})
             .populate({path:"vacancy",select:"title description requirements skillTags experience salary benefits category company"})
             
             
-            res.status(200).json(resumes)
+            res.status(200).json(favourites)
         }catch(error){
             res.status(500).json({status:false,message:error.message});
         }

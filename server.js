@@ -13,6 +13,7 @@ const resumeRoute=require('./routes/resumeRoute')
 const authCompanyRoute=require('./routes/authCompanyRoute')
 const companyRoute=require('./routes/companyRoute')
 const applicationRoute=require('./routes/applicationRoute')
+const favouriteRoute=require('./routes/favouriteRoute')
 const swaggerJSDocs = YAML.load("./api.yaml");
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerJSDocs));
 dotenv.config()
@@ -31,5 +32,6 @@ app.use('/api/resumes',resumeRoute)
 app.use('/api/',authCompanyRoute)
 app.use('/api/companies',companyRoute)
 app.use('/api/applications',applicationRoute)
+app.use('/api/favourites',favouriteRoute)
 app.listen(process.env.PORT||6000,console.log(`app runnng on port ${process.env.PORT}`))
 

@@ -5,6 +5,7 @@ module.exports={
         try{
             const id=req.params.id;
             const user=await User.findById(id)
+           
             const {password,__v,createdAt,...userData}=user._doc;
             res.status(200).json({...userData})
     
