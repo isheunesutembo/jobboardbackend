@@ -1,8 +1,8 @@
 const mongoose=require('mongoose')
 const FavoriteSchema=new mongoose.Schema({
-    accepted:{type:Boolean ,default:false},
-    company:{type:mongoose.Schema.Types.ObjectId,required:true},
-    resume:{type:mongoose.Schema.Types.ObjectId,required:true}
+   
+   vacancy:{type:mongoose.Schema.Types.ObjectId,required:true,ref:"Vacancy"},
+   userId:{type:mongoose.Schema.Types.ObjectId,required:true,ref:"User"},
 
 },{
     toJSON:{
