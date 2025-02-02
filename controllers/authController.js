@@ -1,5 +1,4 @@
 const User=require('../models/UseModel')
-const CryptoJs=require('crypto-js')
 const jwt=require('jsonwebtoken')
 const bcrypt=require('bcrypt')
 
