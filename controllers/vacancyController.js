@@ -17,22 +17,22 @@ module.exports={
     },
     searchVacancy:async(req,res)=>{
      try{
-       /* const result =await Vacancy.aggregate([
+        
+        const result =await Vacancy.aggregate([
+          
             {
-                '$search':{
-                    'index':'vacancy-search',
-                    'text':{
-                        'query':req.query.search == ''?'':req.query.search,
-                        'path':{
-                            'wildcard':'*'
-                        }
-                    }
-                
+                $search: {
+                  index: "vacancy-search",
+                  text: {
+                    query:  req.query.search ,
+                    path: "title"
+                  }
                 }
-            }
+              }
         ]).limit(5)
-        */
-       const result=Vacancy.find({'$text':req.query.search})     
+        
+        
+       //const result=Vacancy.find({'$text':req.query.search})     
            
         res.status(200).send(result)
      }catch(error){
@@ -52,6 +52,7 @@ module.exports={
             res.status(500).json({status:false,message:error.message});
         }
     },
+    
     getVacancyById:async(req,res)=>{
         const id=req.params.id;
         try{
@@ -72,8 +73,6 @@ module.exports={
             res.status(500).json({status:false,message:error.message});
         }
     },
-    searchVacancy:async(req,res)=>{
-        
-    }
+    
 
 }

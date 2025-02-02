@@ -3,34 +3,24 @@ const Application=require('../models/ApplicationModel')
 
 module.exports={
     createApplication:async(req,res)=>{
-        upload(req,res,function (error){
-           
-              
-                const newApplication=new Application({
-                    resume:req.body.resume,
-                    userId:req.body.userId,
-                    company:req.body.company,
-                    vacancyId:req.body.vacancyId
-                });
-                const {application}=req.body
-                if(!application){
-                    res.status(400).json({status:false,message:"Provide application"})
-                }
-                try{
-                  
-                    newApplication.save()
-                }catch(error){
-                    res.status(500).json({status:false,message:error.message})
-                }
-          
-
-        })
        
+        const {vacancyId,resume,company,userId}=req.body;
+        if(!vacancyId||!resume||!company||!userId){
+            res.status(400).json({status:false,message:"You have a missing field"})
+        }
+        try{
+            const newApplication=new Application(req.body)
+            await newApplication.save()
+            res.status(201).json({status:true,message:"Application has been sent successfully!"})
+        }catch(error){
+            res.status(500).json({status:false,message:error.message})
+        }
     },
     getApplicationsByVacancy:async(req,res)=>{
         const id=req.params.id;
         try{
             const applications =await Application.find({vacancyId:id})
+            .populate({path:"resume"})
             res.status(200).json(applications)
         }catch(error){
             res.status(500).json({status:false,message:error.message});
@@ -42,12 +32,25 @@ module.exports={
         try{
             const applications =await Application.find({userId:id})
             .populate({path:"company",select:"name address logo email approved "})
-            .populate({path:"vacancy",select:"title description requirements skillTags experience salary benefits"})
+            .populate({path:"resume"})
             res.status(200).json(applications)
         }catch(error){
             res.status(500).json({status:false,message:error.message});
         }
     },
+    getApplications:async(req,res)=>{
+       
+        try{
+            const applications =await Application.find()
+            .populate({path:"company",select:"name address logo email approved "})
+            .populate({path:"resume"})
+           
+            res.status(200).json(applications)
+        }catch(error){
+            res.status(500).json({status:false,message:error.message});
+        }
+    },
+  
     getCompanyApplications:async(req,res)=>{
         const id=req.params.id;
         try{

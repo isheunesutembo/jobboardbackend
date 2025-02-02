@@ -1,5 +1,6 @@
 const mongoose=require('mongoose')
 const ResumeSchema=new mongoose.Schema({
+    title:{type:String,required:true},
     resume:{type:String ,},
     userId:{type:mongoose.Schema.Types.ObjectId,required:true,ref:"User"},
    

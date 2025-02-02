@@ -1,6 +1,6 @@
 const mongoose=require('mongoose')
 const ApplicationSchema=new mongoose.Schema({
-    accepted:{type:Boolean ,default:false},
+    status:{type:String ,default:"Pending",enum:["Pending", "Accepted","Rejected"]},
     company:{type:mongoose.Schema.Types.ObjectId,required:true,ref:"Company"},
     resume:{type:mongoose.Schema.Types.ObjectId,required:true,ref:"Resume"},
     userId:{type:mongoose.Schema.Types.ObjectId,required:true,ref:"User"},

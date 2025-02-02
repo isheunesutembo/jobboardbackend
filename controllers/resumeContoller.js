@@ -3,32 +3,32 @@ const upload=require('../middleware/resume.upload')
 
 module.exports={
     createResume:async(req,res)=>{
-        upload(req,res,function (error){
+        upload(req,res,function(error){
             if(error){
                 res.status(500).json({status:false,message:error.message})
             }else{
+                const {userId,title}=req.body;
                 const path=req.file!=undefined?req.file.path.replace(/\\/g,"/"):"";
-                const {userId}=req.body;
-                if(!userId||!path){
+                if(!userId||!path||!title){
                     res.status(400).json({status:false,message:"You have a missing field"})
                 }
+               
                 const newResume=new Resume({
-                    resume:path,
                     userId:req.body.userId,
-                   
-                });
-             
-              
+                    resume:path,
+                    title:req.body.title
+                })
                 try{
-                  
-                    newResume.save()
+                     newResume.save()
+                    res.status(201).json({status:true,message:"Resume created successfull"})
                 }catch(error){
-                    res.status(500).json({status:false,message:error.message})
+                    res.status(500).json({status:false,message:error.message});
+        
                 }
             }
-
         })
-       
+        
+        
     },
     getUserResume:async(req,res)=>{
         const id=req.params.id;

@@ -18,5 +18,5 @@ const VacancySchema=new mongoose.Schema({
         }
     }
 });
-VacancySchema.indexes({title:"text",description:"text",requirements:"text",skillTags:"text"})
+
 module.exports=mongoose.model('Vacancy',VacancySchema)

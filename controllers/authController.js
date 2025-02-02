@@ -1,6 +1,7 @@
 const User=require('../models/UseModel')
 const jwt=require('jsonwebtoken')
 const bcrypt=require('bcrypt')
+const RefreshTokenModel = require('../models/RefreshTokenModel')
 
 
 module.exports={
@@ -61,8 +62,15 @@ module.exports={
                     email:user.email, 
                 },
                 process.env.JWT_SECRET,{expiresIn:"30d"})
+                const refreshToken=jwt.sign({
+                    id:user._id,
+                    userType:user.userType ,
+                    email:user.email, 
+                },
+                process.env.REFRESH_KEY,{expiresIn:"90d"})
+                 await RefreshTokenModel.create({token:refreshToken,userId:user._id})
                 const{password,otp,...others}=user._doc;  
-                res.status(201).json({...others,userToken})
+                res.status(201).json({...others,userToken,refreshToken})
             }
             
             
@@ -70,5 +78,31 @@ module.exports={
             res.status(500).json({status:false,message:error.message})
         }
 
+    },
+    refreshToken:async(req,res)=>{
+        const {refreshToken}=req.body;
+        if(!refreshToken)return res.status(401).json({message:"Refresh token is required"})
+            try{
+        const decoded=jwt.verify(refreshToken,process.env.REFRESH_KEY)
+        const sharedToken=await RefreshTokenModel.findOne({token:refreshToken,userId:decoded.id})
+         if(!sharedToken)return res.status(403).json({message:"Invalid refresh token"})
+         const userToken=jwt.sign({id:decoded.id},process.env.REFRESH_KEY,
+        {expiresIn:"30d"})
+        res.status(200).json({userToken})
+    
+        }catch(error){
+            res.status(403).json({ error: 'Invalid refresh token' });
+        }
+        },
+    logout:async(req,res)=>{
+        const { refreshToken } = req.body;
+        if (!refreshToken) return res.status(400).json({ error: 'Refresh token is required' });
+      
+        try {
+          await RefreshTokenModel.deleteOne({ token: refreshToken });
+          res.json({ message: 'Logged out successfully' });
+        } catch (err) {
+          res.status(400).json({ error: err.message });
+        }
     }
 }
