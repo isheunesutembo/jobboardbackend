@@ -3,25 +3,29 @@ const jwt =require('jsonwebtoken')
 const authenticateToken=(req,res,next)=>{
     const authHeader=req.headers['authorization']
    
-    if(authHeader){
-        const token=authHeader && authHeader.split(' ')[1]
+   
+        const token= authHeader.split(" ")[1]
+        if(!token){
+            return res.status(401).json({ message: 'Access denied. No token provided.' });
+        }
         jwt.verify(token,process.env.JWT_SECRET),async(err,user)=>{
             if(err){
-                res.status(403).json({status:false,message:"Invalid Token"})
+                res.status(403).json({status:false,message:"Invalid or expired token"})
             }
             req.user=user
             next();
         }
-    }else{
-        res.status(401).json({status:false,message:"You are not authenticated"})
-    }
+    
   
 
 }
 const verifyToken=(req,res,next)=>{
     const authHeader=req.headers.authorization;
-    if(authHeader){
-        const token=authHeader.split(" ")[1]
+  
+        const token=authHeader&&authHeader.split(" ")[1]
+        if(!token){
+            return res.status(401).json({ message: 'Access denied. No token provided.' });
+        }
         jwt.verify(token,process.env.JWT_SECRET,async(err,user)=>{
             if(err){
                 return res.status(403).json({status:false,message:"invalid token"})
@@ -29,9 +33,7 @@ const verifyToken=(req,res,next)=>{
             req.user=user;
             next();
         })
-    }else{
-        return res.status(401).json({status:false,message:"You're not authenticated"})
-    }
+    
     
 
 };

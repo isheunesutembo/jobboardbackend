@@ -5,6 +5,6 @@ router.post("/",vacancyController.createVacancy)
 router.get("/",vacancyController.getAllVacancies)
 router.get("/",vacancyController.searchVacancy)
 router.get("/:id",vacancyController.getVacancyById)
-router.get("/:id",vacancyController.getVacancyByCategory)
+router.get("/vacancyByCategory:id",vacancyController.getVacancyByCategory)
 
 module.exports=router

@@ -1,6 +1,7 @@
 const Company=require('../models/companyModel')
 const bcrypt=require('bcrypt')
 const jwt=require('jsonwebtoken')
+const RefreshTokenModel = require('../models/RefreshTokenModel')
 
 module.exports={
     createCompany:async(req,res)=>{
@@ -52,7 +53,7 @@ module.exports={
                 return res.status(400).json({status:false,message:"User not found"})
             }
             if(company&&(await bcrypt.compare(req.body.password,company.password))){
-                const companyToken=jwt.sign({
+                const accessToken=jwt.sign({
                     id:company._id,
                     userType:company.userType,
                     email:company.email
@@ -60,13 +61,35 @@ module.exports={
                 
                 process.env.JWT_SECRET,{expiresIn:"30d"})
                 const{password,otp,...others}=company._doc;
-                res.status(200).json({...others,companyToken})
+                 const refreshToken=jwt.sign({
+                                    id:company._id,
+                                    userType:company.userType ,
+                                    email:company.email, 
+                                },
+                                process.env.REFRESH_KEY,{expiresIn:"90d"})
+                                 await RefreshTokenModel.create({token:refreshToken,userId:company._id})
+                res.status(200).json({...others,accessToken,refreshToken})
             }
            
         }catch(error){
             res.status(500).json({status:false,message:error.message})
         }
 
-    }
+    },
+       refreshToken:async(req,res)=>{
+            const {refreshToken}=req.body;
+            if(!refreshToken)return res.status(401).json({message:"Refresh token is required"})
+                try{
+            const decoded=jwt.verify(refreshToken,process.env.REFRESH_KEY)
+            const sharedToken=await RefreshTokenModel.findOne({token:refreshToken,userId:decoded.id})
+             if(!sharedToken)return res.status(403).json({message:"Invalid refresh token"})
+             const userToken=jwt.sign({id:decoded.id},process.env.REFRESH_KEY,
+            {expiresIn:"30d"})
+            res.status(200).json({userToken})
+        
+            }catch(error){
+                res.status(403).json({ error: 'Invalid refresh token' });
+            }
+            },
     
 }

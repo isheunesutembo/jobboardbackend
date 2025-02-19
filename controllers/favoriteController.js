@@ -15,7 +15,7 @@ module.exports={
             return res.status(400).json({status:false,message:"vacancy already exists"})
            }
             await favourite.save()
-            res.status(201).json({status:true,message:"Favorite has been created successfully!"})
+            res.status(201).json({status:true,message:"added to favourites!"})
         }catch(error){
             res.status(500).json({status:false,message:error.message})
         }

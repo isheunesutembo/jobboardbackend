@@ -57,7 +57,8 @@ module.exports={
         const id=req.params.id;
         try{
          const vacancy=await Vacancy.findById(id).
-         populate("category","title image");
+         populate("category","title image").
+         populate({path:"company",select:"name address logo phoneNumber email"});
          res.status(200).json(vacancy)
 
         }catch(error){
@@ -67,7 +68,8 @@ module.exports={
     getVacancyByCategory:async(req,res)=>{
         const id=req.params.id;
         try{
-            const vacancies=await Vacancy.find({category:id})
+            const vacancies=await Vacancy.find({category:id}).
+            populate({path:"category",select:"title image"});
             res.status(200).json(vacancies)
         }catch(error){
             res.status(500).json({status:false,message:error.message});
