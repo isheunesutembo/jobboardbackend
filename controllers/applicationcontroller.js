@@ -85,6 +85,24 @@ module.exports={
         }catch(error){
             res.status(500).json({status:false,message:error.message});
         }
+    },
+    updateApplicationStatus:async(req,res)=>{
+     const id=req.params.id
+     const {status}=req.body
+
+     if(!["Pending","Accepted","Rejected"].includes(status)){
+        return res.status(400).json({status:false,message:"Invalid status"})
+     }
+     try{
+
+     const application=await Application.findByIdAndUpdate(id,{status}, {new:true,runValidators:true})
+     if(!application){
+        return res.status(404).json({status:false,message:"Application not found"})
+     }
+     res.send(request)
+    }catch(error){
+        res.status(500).json({status:false,message:error.message});
+    }
     }
 
 }
