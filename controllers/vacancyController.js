@@ -1,3 +1,4 @@
+const vacancyModel = require('../models/vacancyModel');
 const Vacancy=require('../models/vacancyModel')
 
 module.exports={
@@ -16,28 +17,17 @@ module.exports={
         }
     },
     searchVacancy:async(req,res)=>{
-     try{
-        
-        const result =await Vacancy.aggregate([
-          
-            {
-                $search: {
-                  index: "vacancy-search",
-                  text: {
-                    query:  req.query.search ,
-                    path: "title"
-                  }
-                }
-              }
-        ]).limit(5)
-        
-        
-       //const result=Vacancy.find({'$text':req.query.search})     
-           
-        res.status(200).send(result)
-     }catch(error){
-        res.status(500).json({status:false,message:error.message})
-     }
+        const {query}=req.query
+        if(!query){
+            return res.status(400).json({message:"Query parameters required"})
+        }
+        try{
+            const results=await Vacancy.find({$text:{$search:query}})
+            res.json(results)
+        }catch(error){
+            res.status(500).json({message:"Error searching",error})
+        }
+     
     },
     
     getAllVacancies:async(req,res)=>{
@@ -75,6 +65,28 @@ module.exports={
             res.status(500).json({status:false,message:error.message});
         }
     },
+    filterVacancy:async(req,res)=>{
+        try{
+            let{title,minSalary,maxSalary,requirements}=req.query;
+            let filter={}
+    
+            if(title)filter.title=new RegExp(title,"i");
+            if(requirements)filter.requirements=new RegExp(title,"i");
+    
+            if(minSalary||maxSalary){
+                filter.salary={};
+                if(minSalary)filter.salary.$gte=parseInt(minSalary);
+                if(maxSalary)filter.salary.$lte=parseInt(maxSalary)
+            }
+    
+            const vacancies=await vacancyModel.find(filter)
+            res.json(vacancies)
+        }catch(error){
+            res.status(500).json({message:"Error fetchinng vacancies",error})
+        }
+       
+
+    }
     
 
 }

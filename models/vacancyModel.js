@@ -17,5 +17,6 @@ const VacancySchema=new mongoose.Schema({
         }
     }
 });
+VacancySchema.index({title:'text',description:"text"})
 
 module.exports=mongoose.model('Vacancy',VacancySchema)

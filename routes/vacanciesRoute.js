@@ -125,7 +125,8 @@ router.get("/",vacancyController.getAllVacancies)
  *                 
  * 
  */
-router.get("/",vacancyController.searchVacancy)
+router.get("/search",vacancyController.searchVacancy)
+router.get("/filter",vacancyController.filterVacancy)
 router.get("/:id",vacancyController.getVacancyById)
 router.get("/vacancyByCategory:id",vacancyController.getVacancyByCategory)
 

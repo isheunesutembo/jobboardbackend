@@ -4,7 +4,7 @@ const dotenv=require('dotenv')
 const mongoose=require('mongoose')
 const bodyParser = require("body-parser")
 const swaggerUI = require("swagger-ui-express");
-const YAML = require("yamljs");
+
 const categoryRoute=require('./routes/categoryRoute')
 const vacancyRoute=require('./routes/vacanciesRoute')
 const userRoute=require('./routes/userRoute')
@@ -15,7 +15,7 @@ const companyRoute=require('./routes/companyRoute')
 const applicationRoute=require('./routes/applicationRoute')
 const favouriteRoute=require('./routes/favouriteRoute')
 const swaggerJsdoc = require('swagger-jsdoc');
-const swaggerUi = require('swagger-ui-express');
+
 const options = {
     definition: {
       openapi: '3.0.0',
@@ -63,11 +63,10 @@ dotenv.config()
 mongoose.connect(process.env.DB)
 .then(()=>console.log('connected to database'))
 .catch((err)=>console.log(err))
-
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 const specs = swaggerJsdoc(options);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(specs));
 app.use('/uploads',express.static("uploads"))
 app.use("/api/categories",categoryRoute)
 app.use("/api/vacancies",vacancyRoute)
