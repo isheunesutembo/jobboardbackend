@@ -31,25 +31,49 @@ module.exports={
     },
     
     getAllVacancies:async(req,res)=>{
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+      
+        const skip = (page - 1) * limit;
         try{
-            const vacancies=await Vacancy.find({title:{$ne:'more'}},{__v:0})
+            const vacancies=await Vacancy.find({title:{$ne:'more'}},{__v:0}).skip(skip)
+            .limit(limit)
             .populate({path:"company",select:"name address logo phoneNumber email"})
             .populate({path:"category",select:"image title"})
+            Vacancy.countDocuments()
+            const totalPages = Math.ceil(total / limit);
            
             
-            res.status(200).json(vacancies)
+            res.status(200).json({vacancies,pagination: {
+                page,
+                totalPages,
+                hasNextPage: page < totalPages,
+                hasPrevPage: page > 1,
+              }})
         }catch(error){
             res.status(500).json({status:false,message:error.message});
         }
     },
     
     getVacancyById:async(req,res)=>{
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+      
+        const skip = (page - 1) * limit;
         const id=req.params.id;
         try{
          const vacancy=await Vacancy.findById(id).
+         skip(skip).limit(limit).
          populate("category","title image").
          populate({path:"company",select:"name address logo phoneNumber email"});
-         res.status(200).json(vacancy)
+         Vacancy.countDocuments()
+         const totalPages = Math.ceil(total / limit);
+         res.status(200).json({vacancy,pagination: {
+            page,
+            totalPages,
+            hasNextPage: page < totalPages,
+            hasPrevPage: page > 1,
+          }})
 
         }catch(error){
         res.status(500).json({status:false,message:error.message});
@@ -58,8 +82,7 @@ module.exports={
     getVacancyByCategory:async(req,res)=>{
         const id=req.params.id;
         try{
-            const vacancies=await Vacancy.find({category:id}).
-            populate({path:"category",select:"title image"});
+            const vacancies=await Vacancy.find({category:id});
             res.status(200).json(vacancies)
         }catch(error){
             res.status(500).json({status:false,message:error.message});

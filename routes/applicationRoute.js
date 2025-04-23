@@ -2,6 +2,7 @@ const router=require('express').Router()
 const { Router } = require('express')
 const applicationController=require('../controllers/applicationcontroller')
 const {verifyTokenAndAuthorization,authenticateToken,verifyHiringCompany, verifyAdmin}=require('../middleware/verifyToken')
+const {loginLimiter,apiLimiter}=require('../middleware/ratelimiting')
 /**
  * @swagger
  * /api/applications:
@@ -36,7 +37,7 @@ const {verifyTokenAndAuthorization,authenticateToken,verifyHiringCompany, verify
  *                 
  * 
  */
-router.post("/",verifyTokenAndAuthorization,applicationController.createApplication)
+router.post("/",apiLimiter,verifyTokenAndAuthorization,applicationController.createApplication)
 /**
  * @swagger
  * /api/applications/applicationsbyvacancy:id:
@@ -71,7 +72,7 @@ router.post("/",verifyTokenAndAuthorization,applicationController.createApplicat
  *                 
  * 
  */
-router.get("applicationsbyvacancy/:id",verifyHiringCompany,applicationController.getApplicationsByVacancy)
+router.get("applicationsbyvacancy/:id",apiLimiter,verifyHiringCompany,applicationController.getApplicationsByVacancy)
 /**
  * @swagger
  * /api/applications/:
@@ -113,7 +114,7 @@ router.get("applicationsbyvacancy/:id",verifyHiringCompany,applicationController
  *                 
  * 
  */
-router.get("/",applicationController.getApplications)
+router.get("/",apiLimiter,applicationController.getApplications)
 /**
  * @swagger
  * /api/applications/applicationsbycompany:id:
@@ -148,7 +149,7 @@ router.get("/",applicationController.getApplications)
  *                 
  * 
  */
-router.get("/applicationsbycompany/:id",verifyHiringCompany,applicationController.getCompanyApplications)
+router.get("/applicationsbycompany/:id",apiLimiter,verifyHiringCompany,applicationController.getCompanyApplications)
 /**
  * @swagger
  * /api/applications/applicationsbyuser:id:
@@ -190,7 +191,7 @@ router.get("/applicationsbycompany/:id",verifyHiringCompany,applicationControlle
  *                 
  * 
  */
-router.get("/applicationsbyuser/:id",verifyTokenAndAuthorization,applicationController.getUserApplications)
+router.get("/applicationsbyuser/:id",apiLimiter,verifyTokenAndAuthorization,applicationController.getUserApplications)
 /**
  * @swagger
  * /api/applications/:id:
@@ -232,7 +233,7 @@ router.get("/applicationsbyuser/:id",verifyTokenAndAuthorization,applicationCont
  *                 
  * 
  */
-router.put("/:id",verifyHiringCompany,applicationController.updateApplicationStatus)
+router.put("/:id",apiLimiter,verifyHiringCompany,applicationController.updateApplicationStatus)
 /**
  * @swagger
  * /api/applications/:id:
@@ -274,7 +275,7 @@ router.put("/:id",verifyHiringCompany,applicationController.updateApplicationSta
  *                 
  * 
  */
-router.delete("/:id",verifyHiringCompany,applicationController.deleteApplication)
+router.delete("/:id",apiLimiter,verifyHiringCompany,applicationController.deleteApplication)
 /**
  * @swagger
  * /api/applications/:id:
@@ -309,6 +310,6 @@ router.delete("/:id",verifyHiringCompany,applicationController.deleteApplication
  *                 
  * 
  */
-router.patch("/:id",verifyHiringCompany,applicationController.updateApplicationStatus)
+router.patch("/:id",apiLimiter,verifyHiringCompany,applicationController.updateApplicationStatus)
 
 module.exports=router

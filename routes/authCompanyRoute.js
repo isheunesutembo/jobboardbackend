@@ -1,6 +1,7 @@
 const router=require('express').Router()
 const { Router } = require('express')
 const authController=require('../controllers/companyAuthController')
+const {loginLimiter,apiLimiter}=require('../middleware/ratelimiting')
 /**
  * @swagger
  * /api/registerCompany/:
@@ -30,7 +31,7 @@ const authController=require('../controllers/companyAuthController')
  *                     type: string
  * 
  */
-router.post("/registerCompany",authController.createCompany)
+router.post("/registerCompany",loginLimiter,authController.createCompany)
 /**
  * @swagger
  * /api/logInCompany/:
@@ -59,6 +60,6 @@ router.post("/registerCompany",authController.createCompany)
  *                     type: string
  * 
  */
-router.post("/logInCompany",authController.logInCompany)
+router.post("/logInCompany",loginLimiter,authController.logInCompany)
 
 module.exports=router
