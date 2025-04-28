@@ -65,5 +65,5 @@ router.post("/registerUser",loginLimiter,authController.createUser)
  */
 router.post("/logInUser",loginLimiter,authController.logInUser)
 router.post("/refresh-token",loginLimiter,authController.refreshToken)
-router.post("/logout",loginLimiter,authController.logout)
+router.post("/logout",authController.logout)
 module.exports=router

@@ -40,7 +40,7 @@ module.exports={
             .limit(limit)
             .populate({path:"company",select:"name address logo phoneNumber email"})
             .populate({path:"category",select:"image title"})
-            Vacancy.countDocuments()
+        const total=  Vacancy.countDocuments()
             const totalPages = Math.ceil(total / limit);
            
             
@@ -63,17 +63,13 @@ module.exports={
         const id=req.params.id;
         try{
          const vacancy=await Vacancy.findById(id).
-         skip(skip).limit(limit).
+         
          populate("category","title image").
          populate({path:"company",select:"name address logo phoneNumber email"});
-         Vacancy.countDocuments()
+        const total= Vacancy.countDocuments()
          const totalPages = Math.ceil(total / limit);
-         res.status(200).json({vacancy,pagination: {
-            page,
-            totalPages,
-            hasNextPage: page < totalPages,
-            hasPrevPage: page > 1,
-          }})
+         res.status(200).json({vacancy
+          })
 
         }catch(error){
         res.status(500).json({status:false,message:error.message});

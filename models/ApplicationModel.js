@@ -4,7 +4,7 @@ const ApplicationSchema=new mongoose.Schema({
     company:{type:mongoose.Schema.Types.ObjectId,required:true,ref:"Company"},
     resume:{type:mongoose.Schema.Types.ObjectId,required:true,ref:"Resume"},
     userId:{type:mongoose.Schema.Types.ObjectId,required:true,ref:"User"},
-    vacancyId:{type:mongoose.Schema.Types.ObjectId,required:true,ref:"Vacancy"}
+    vacancy:{type:mongoose.Schema.Types.ObjectId,required:true,ref:"Vacancy"}
 },{timestamps:true},
 {
     toJSON:{

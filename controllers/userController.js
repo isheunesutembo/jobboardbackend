@@ -26,7 +26,7 @@ module.exports={
                 const user=User({username:username,firstName:firstName,lastName:lastName,profileImage:path})
                 
                 try{
-                    const updatedUser=await user.findByIdAndUpdate(id,user,{new:true})
+                    const updatedUser=await User.findByIdAndUpdate(id,{user})
                     res.status(201).json({status:true,message:"User updated successfully"})
                 }catch(error){
                     res.status(500).json({status:false,message:error.message})

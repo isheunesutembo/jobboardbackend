@@ -1,6 +1,7 @@
 const router=require('express').Router()
 const { Router } = require('express')
 const vacancyController=require('../controllers/vacancyController')
+const {loginLimiter,apiLimiter}=require('../middleware/ratelimiting')
 /**
  * @swagger
  * /api/vacancies/:
@@ -40,7 +41,7 @@ const vacancyController=require('../controllers/vacancyController')
  *                 
  * 
  */
-router.post("/",vacancyController.createVacancy)
+router.post("/",apiLimiter,vacancyController.createVacancy)
 /**
  * @swagger
  * /api/vacancies/:
@@ -80,7 +81,7 @@ router.post("/",vacancyController.createVacancy)
  *                 
  * 
  */
-router.get("/",vacancyController.getAllVacancies)
+router.get("/",apiLimiter,vacancyController.getAllVacancies)
 /**
  * @swagger
  * /api/vacancies/:
@@ -125,9 +126,9 @@ router.get("/",vacancyController.getAllVacancies)
  *                 
  * 
  */
-router.get("/search",vacancyController.searchVacancy)
-router.get("/filter",vacancyController.filterVacancy)
-router.get("/:id",vacancyController.getVacancyById)
-router.get("/vacancyByCategory/:id",vacancyController.getVacancyByCategory)
+router.get("/search",apiLimiter,vacancyController.searchVacancy)
+router.get("/filter",apiLimiter,vacancyController.filterVacancy)
+router.get("/:id",apiLimiter,vacancyController.getVacancyById)
+router.get("/vacancyByCategory/:id",apiLimiter,vacancyController.getVacancyByCategory)
 
 module.exports=router

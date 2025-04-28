@@ -37,6 +37,7 @@ module.exports={
             const applications =await Application.find({userId:id})
             .populate({path:"company",select:"name address logo email approved "})
             .populate({path:"resume"})
+            .populate({path:"vacancy"})
           
             res.status(200).json(applications)
         }catch(error){
@@ -61,7 +62,7 @@ module.exports={
         const id=req.params.id;
         try{
             const applications =await Application.find({company:id})
-            .populate({path:"user",select:"username email firstname lastname phone profileImage"})
+            .populate({path:"userId",select:"username email firstname lastname phone profileImage"})
             .populate({path:'resume',select:"resume"})
             res.status(200).json(applications)
         }catch(error){

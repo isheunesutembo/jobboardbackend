@@ -76,7 +76,7 @@ router.get("/:id",verifyTokenAndAuthorization,userController.getUser)
  *                 
  * 
  */
-router.put("/:id",verifyTokenAndAuthorization,userController.updateUser)
+router.patch("/:id",verifyTokenAndAuthorization,userController.updateUser)
 /**
  * @swagger
  * /api/users/:id:
